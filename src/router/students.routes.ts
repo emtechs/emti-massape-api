@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import {
   createStudentController,
-  exportStudentController,
   listStudentController,
   resumeStudentController,
   retrieveStudentController,
@@ -29,8 +28,6 @@ studentRouter.get(
   verifyUserIsAuthenticated,
   resumeStudentController,
 )
-
-studentRouter.get('/export', verifyUserIsAuthenticated, exportStudentController)
 
 studentRouter.get('/:id', verifyUserIsAuthenticated, retrieveStudentController)
 

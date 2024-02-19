@@ -2,7 +2,6 @@ import { Router } from 'express'
 import {
   createClassController,
   dashClassController,
-  exportClassController,
   listClassController,
   listClassDashController,
   retrieveClassController,
@@ -36,8 +35,6 @@ classRouter.get(
   verifyUserIsAuthenticated,
   retrieveClassYearController,
 )
-
-classRouter.get('/export', verifyUserIsAuthenticated, exportClassController)
 
 classRouter.get(
   '/school/:school_id/dash/:year_id',

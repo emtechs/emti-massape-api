@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import {
   createPeriodService,
   createYearService,
-  exportYearService,
   listCalendarFrequencyService,
   listCalendarService,
   listCalendarStudentService,
@@ -20,11 +19,6 @@ export const createPeriodController = async (req: Request, res: Response) => {
 export const createYearController = async (req: Request, res: Response) => {
   const year = await createYearService(req.body)
   return res.status(201).json(year)
-}
-
-export const exportYearController = async (req: Request, res: Response) => {
-  const years = await exportYearService()
-  return res.json(years)
 }
 
 export const listCalendarController = async (req: Request, res: Response) => {

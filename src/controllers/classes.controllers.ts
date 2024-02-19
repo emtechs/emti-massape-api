@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import {
   createClassService,
-  exportClassService,
   listClassService,
   dashClassService,
   listClassDashService,
@@ -24,11 +23,6 @@ export const dashClassController = async (req: Request, res: Response) => {
     req.query,
   )
   return res.json(dash)
-}
-
-export const exportClassController = async (req: Request, res: Response) => {
-  const classes = await exportClassService()
-  return res.json(classes)
 }
 
 export const listClassController = async (req: Request, res: Response) => {

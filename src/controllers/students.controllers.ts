@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import {
   createStudentService,
-  exportStudentService,
   listStudentService,
   resumeStudentService,
   retrieveStudentService,
@@ -11,11 +10,6 @@ import {
 export const createStudentController = async (req: Request, res: Response) => {
   const student = await createStudentService(req.body, req.query)
   return res.status(201).json(student)
-}
-
-export const exportStudentController = async (req: Request, res: Response) => {
-  const students = await exportStudentService()
-  return res.json(students)
 }
 
 export const listStudentController = async (req: Request, res: Response) => {

@@ -12,7 +12,6 @@ import {
 import {
   createPeriodController,
   createYearController,
-  exportYearController,
   listCalendarController,
   listCalendarFrequencyController,
   listCalendarStudentController,
@@ -66,12 +65,6 @@ calendarRouter.get(
   '/year/:year',
   verifyUserIsAuthenticated,
   retrieveYearController,
-)
-
-calendarRouter.get(
-  '/export/year',
-  verifyUserIsAuthenticated,
-  exportYearController,
 )
 
 calendarRouter.get(

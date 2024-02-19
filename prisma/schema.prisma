@@ -1,0 +1,206 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SERV
+  DIRET
+  ADMIN
+}
+
+enum CategoryPeriod {
+  ANO
+  BIMESTRE
+  SEMESTRE
+}
+
+model User {
+  id              String         @id @default(uuid())
+  role            Role           @default(SERV)
+  is_super        Boolean        @default(false)
+  is_active       Boolean        @default(true)
+  created_at      DateTime       @default(now())
+  director_school School[]
+  work_school     SchoolServer[]
+  frequencies     Frequency[]
+  requests        Request[]
+
+  @@map("users")
+}
+
+model School {
+  id          String         @id @default(uuid())
+  name        String         @unique @db.VarChar(254)
+  is_active   Boolean        @default(true)
+  created_at  DateTime       @default(now())
+  director    User?          @relation(fields: [director_id], references: [id], onDelete: SetNull)
+  director_id String?
+  servers     SchoolServer[]
+  classes     ClassYear[]
+
+  @@map("schools")
+}
+
+model Class {
+  id         String      @id @default(uuid())
+  name       String      @unique @db.VarChar(254)
+  is_active  Boolean     @default(true)
+  created_at DateTime    @default(now())
+  schools    ClassYear[]
+
+  @@map("classes")
+}
+
+model Student {
+  id         String         @id @default(uuid())
+  name       String         @db.VarChar(254)
+  registry   String         @unique @db.VarChar(50)
+  is_active  Boolean        @default(true)
+  created_at DateTime       @default(now())
+  classes    ClassStudent[]
+  fouls      Foul[]
+  tests      TestStudent[]
+
+  @@map("students")
+}
+
+model Frequency {
+  id          String    @id @default(uuid())
+  date        DateTime  @db.Date
+  is_open     Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  finished_at DateTime  @db.Timestamp()
+  infrequency Float     @default(0)
+  class       ClassYear @relation(fields: [class_id], references: [id], onDelete: Cascade)
+  class_id    String
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     String
+  request     Request?  @relation(fields: [request_id], references: [id], onDelete: SetNull)
+  request_id  String?   @unique
+  fouls       Foul[]
+
+  @@map("frequencies")
+}
+
+model Test {
+  id         String        @id @default(uuid())
+  name       String        @db.VarChar(254)
+  options    Int           @default(3)
+  quests     Int
+  model      String        @db.VarChar(100)
+  templet    Int[]         @default([])
+  is_visible Boolean       @default(false)
+  created_at DateTime      @default(now())
+  class      ClassYear     @relation(fields: [class_id], references: [id], onDelete: Cascade)
+  class_id   String
+  students   TestStudent[]
+
+  @@map("tests")
+}
+
+model Year {
+  id      String      @id @default(uuid())
+  year    String      @unique @db.VarChar(10)
+  periods Period[]
+  classes ClassYear[]
+
+  @@map("years")
+}
+
+model Period {
+  id           String         @id @default(uuid())
+  name         String         @db.VarChar(50)
+  category     CategoryPeriod
+  date_initial DateTime       @db.Date
+  date_final   DateTime       @db.Date
+  created_at   DateTime       @default(now())
+  year         Year           @relation(fields: [year_id], references: [id], onDelete: Cascade)
+  year_id      String
+
+  @@map("periods")
+}
+
+model Request {
+  id            String     @id @default(uuid())
+  justification String     @db.VarChar(200)
+  created_at    DateTime   @default(now())
+  user          User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       String
+  frequency     Frequency?
+  foul          Foul?
+
+  @@map("requests")
+}
+
+model SchoolServer {
+  id         String   @id @default(uuid())
+  school     School   @relation(fields: [school_id], references: [id], onDelete: Cascade)
+  school_id  String
+  server     User     @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  server_id  String
+  role       Role     @default(SERV)
+  created_at DateTime @default(now())
+
+  @@map("school_server")
+}
+
+model ClassYear {
+  id          String         @id @default(uuid())
+  class       Class          @relation(fields: [class_id], references: [id], onDelete: Cascade)
+  class_id    String
+  school      School         @relation(fields: [school_id], references: [id], onDelete: Cascade)
+  school_id   String
+  year        Year           @relation(fields: [year_id], references: [id], onDelete: Cascade)
+  year_id     String
+  created_at  DateTime       @default(now())
+  students    ClassStudent[]
+  frequencies Frequency[]
+  tests       Test[]
+
+  @@map("class_year")
+}
+
+model ClassStudent {
+  id         String    @id @default(uuid())
+  class      ClassYear @relation(fields: [class_id], references: [id], onDelete: Cascade)
+  class_id   String
+  student    Student   @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  student_id String
+  created_at DateTime  @default(now())
+
+  @@map("class_student")
+}
+
+model Foul {
+  id            String    @id @default(uuid())
+  justification String?   @db.VarChar(200)
+  created_at    DateTime  @default(now())
+  frequency     Frequency @relation(fields: [frequency_id], references: [id], onDelete: Cascade)
+  frequency_id  String
+  student       Student   @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  student_id    String
+  request       Request?  @relation(fields: [request_id], references: [id], onDelete: SetNull)
+  request_id    String?   @unique
+
+  @@map("fouls")
+}
+
+model TestStudent {
+  id         String   @id @default(uuid())
+  value      Int      @default(0)
+  created_at DateTime @default(now())
+  test       Test     @relation(fields: [test_id], references: [id], onDelete: Cascade)
+  test_id    String
+  student    Student  @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  student_id String
+
+  @@map("test_student")
+}

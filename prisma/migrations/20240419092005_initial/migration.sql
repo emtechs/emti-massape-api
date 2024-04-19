@@ -40,6 +40,7 @@ CREATE TABLE "periods" (
     "date_initial" DATE NOT NULL,
     "date_final" DATE NOT NULL,
     "year" VARCHAR(50) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "periods_pkey" PRIMARY KEY ("id")
 );
@@ -49,6 +50,7 @@ CREATE TABLE "school_server" (
     "key" TEXT NOT NULL,
     "school_id" TEXT NOT NULL,
     "server_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "school_server_pkey" PRIMARY KEY ("school_id","server_id")
 );
@@ -70,6 +72,7 @@ CREATE TABLE "class_year" (
     "year" VARCHAR(254) NOT NULL,
     "class_id" VARCHAR(254) NOT NULL,
     "school_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "class_year_pkey" PRIMARY KEY ("year","class_id","school_id")
 );

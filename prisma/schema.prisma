@@ -56,16 +56,18 @@ model Period {
   date_initial DateTime       @db.Date
   date_final   DateTime       @db.Date
   year         String         @db.VarChar(50)
+  created_at   DateTime       @default(now())
 
   @@map("periods")
 }
 
 model SchoolServer {
-  key       String @unique @default(uuid())
-  school    School @relation(fields: [school_id], references: [id], onDelete: Cascade)
-  school_id String
-  server    User   @relation(fields: [server_id], references: [id], onDelete: Cascade)
-  server_id String
+  key        String   @unique @default(uuid())
+  school     School   @relation(fields: [school_id], references: [id], onDelete: Cascade)
+  school_id  String
+  server     User     @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  server_id  String
+  created_at DateTime @default(now())
 
   @@id([school_id, server_id])
   @@map("school_server")
@@ -84,12 +86,13 @@ model ClassStudent {
 }
 
 model ClassYear {
-  key       String             @unique @default(uuid())
-  year      String             @db.VarChar(254)
-  class_id  String             @db.VarChar(254)
-  school    School             @relation(fields: [school_id], references: [id], onDelete: Cascade)
-  school_id String
-  students  ClassYearStudent[]
+  key        String             @unique @default(uuid())
+  year       String             @db.VarChar(254)
+  class_id   String             @db.VarChar(254)
+  school     School             @relation(fields: [school_id], references: [id], onDelete: Cascade)
+  school_id  String
+  created_at DateTime           @default(now())
+  students   ClassYearStudent[]
 
   @@id([year, class_id, school_id])
   @@map("class_year")

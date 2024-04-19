@@ -3,6 +3,7 @@ import {
   createClassYearService,
   deleteClassYearService,
   retrieveClassYearService,
+  retrieveManyClassYearService,
 } from '../services'
 
 export const createClassYearController = async (
@@ -26,5 +27,13 @@ export const retrieveClassYearController = async (
   res: Response,
 ) => {
   const classes = await retrieveClassYearService(req.params.id)
+  return res.json(classes)
+}
+
+export const retrieveManyClassYearController = async (
+  req: Request,
+  res: Response,
+) => {
+  const classes = await retrieveManyClassYearService(req.body)
   return res.json(classes)
 }

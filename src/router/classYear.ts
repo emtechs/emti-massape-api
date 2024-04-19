@@ -2,13 +2,14 @@ import { Router } from 'express'
 import {
   createClassYearController,
   deleteClassYearController,
+  retrieveManyClassYearController,
 } from '../controllers'
 import {
   validateSchemaMiddleware,
   verifyIsAdmin,
   verifyUserIsAuthenticated,
 } from '../middlewares'
-import { ClassYearCreateSchema } from '../schemas'
+import { ClassYearCreateSchema, ClassYearRetrieveManySchema } from '../schemas'
 
 export const classYearRouter = Router()
 
@@ -17,6 +18,13 @@ classYearRouter.post(
   verifyUserIsAuthenticated,
   validateSchemaMiddleware(ClassYearCreateSchema),
   createClassYearController,
+)
+
+classYearRouter.get(
+  '/many',
+  verifyUserIsAuthenticated,
+  validateSchemaMiddleware(ClassYearRetrieveManySchema),
+  retrieveManyClassYearController,
 )
 
 classYearRouter.delete(

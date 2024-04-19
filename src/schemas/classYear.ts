@@ -5,3 +5,7 @@ export const ClassYearCreateSchema = z.object({
   class_id: z.string().uuid(),
   school_id: z.string().uuid(),
 })
+
+export const ClassYearRetrieveManySchema = z.object({
+  classes: z.object({ key: z.string().uuid() }).array(),
+})

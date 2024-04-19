@@ -1,7 +1,5 @@
-import sortArray from 'sort-array'
 import { IQuery } from '../../interfaces'
 import { prisma } from '../../lib'
-import { retrieveClassYearService } from '../../services'
 
 export const listClassSchoolServerService = async ({
   take,
@@ -12,7 +10,7 @@ export const listClassSchoolServerService = async ({
   if (take) take = +take
   if (skip) skip = +skip
 
-  const [classData, total] = await Promise.all([
+  const [result, total] = await Promise.all([
     prisma.classYear.findMany({
       take,
       skip,
@@ -28,24 +26,8 @@ export const listClassSchoolServerService = async ({
     }),
   ])
 
-  const classesData = await classReturnArray(classData)
-
-  const result = sortArray(classesData, {
-    by: 'class_name',
-    order: 'asc',
-    computed: { class_name: (row) => row.class.name },
-  })
-
   return {
     total,
     result,
   }
-}
-
-const classReturnArray = async (classData: { key: string }[]) => {
-  const classesData = classData.map((el) => retrieveClassYearService(el.key))
-
-  return Promise.all(classesData).then((clsData) => {
-    return clsData
-  })
 }

@@ -20,7 +20,7 @@ classYearRouter.post(
   createClassYearController,
 )
 
-classYearRouter.get(
+classYearRouter.post(
   '/many',
   verifyUserIsAuthenticated,
   validateSchemaMiddleware(ClassYearRetrieveManySchema),

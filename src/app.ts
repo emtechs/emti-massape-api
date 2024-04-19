@@ -4,6 +4,7 @@ import { errorHandler } from './errors'
 import {
   classStudentRouter,
   classYearRouter,
+  classYearStudentRouter,
   schoolRouter,
   schoolServerRouter,
   studentRouter,
@@ -27,6 +28,7 @@ app.use('/schools', schoolRouter)
 app.use('/schoolserver', schoolServerRouter)
 app.use('/classstudent', classStudentRouter)
 app.use('/classyear', classYearRouter)
+app.use('/classyearstudent', classYearStudentRouter)
 app.use('/students', studentRouter)
 
 app.use(errorHandler)

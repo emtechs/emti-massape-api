@@ -1,5 +1,6 @@
 export * from './classStudent'
 export * from './classYear'
+export * from './classYearStudent'
 export * from './periods'
 export * from './schools'
 export * from './schoolServer'

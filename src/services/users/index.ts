@@ -1,5 +1,6 @@
 export * from './create'
 export * from './list'
+export * from './listClass'
 export * from './listSchool'
 export * from './retrieve'
 export * from './update'

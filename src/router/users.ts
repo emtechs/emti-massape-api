@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   createUserController,
+  listClassUserController,
   listModulesUserController,
   listSchoolUserController,
   listUserController,
@@ -28,6 +29,8 @@ userRouter.post(
 userRouter.get('', verifyUserIsAuthenticated, verifyIsAdmin, listUserController)
 
 userRouter.get('/modules', verifyUserIsAuthenticated, listModulesUserController)
+
+userRouter.get('/classes', verifyUserIsAuthenticated, listClassUserController)
 
 userRouter.get('/schools', verifyUserIsAuthenticated, listSchoolUserController)
 

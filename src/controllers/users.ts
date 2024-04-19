@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import {
   createUserService,
+  listClassUserService,
   listSchoolUserService,
   listUserService,
   retrieveUserService,
@@ -27,6 +28,11 @@ export const listModulesUserController = async (
 
 export const listSchoolUserController = async (req: Request, res: Response) => {
   const schools = await listSchoolUserService(req.query, req.user)
+  return res.json(schools)
+}
+
+export const listClassUserController = async (req: Request, res: Response) => {
+  const schools = await listClassUserService(req.query, req.user)
   return res.json(schools)
 }
 

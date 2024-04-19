@@ -2,16 +2,11 @@ import 'express-async-errors'
 import express from 'express'
 import { errorHandler } from './errors'
 import {
-  calendarRouter,
-  classRouter,
   classStudentRouter,
   classYearRouter,
-  frequencyRouter,
-  infrequencyRouter,
   schoolRouter,
-  serverRouter,
+  schoolServerRouter,
   studentRouter,
-  tokenRouter,
   userRouter,
 } from './router'
 
@@ -29,15 +24,10 @@ app.use((req, res, next) => {
 
 app.use('/users', userRouter)
 app.use('/schools', schoolRouter)
-app.use('/servers', serverRouter)
-app.use('/classes', classRouter)
+app.use('/schoolserver', schoolServerRouter)
 app.use('/classstudent', classStudentRouter)
 app.use('/classyear', classYearRouter)
 app.use('/students', studentRouter)
-app.use('/frequencies', frequencyRouter)
-app.use('/infrequencies', infrequencyRouter)
-app.use('/calendar', calendarRouter)
-app.use('/token', tokenRouter)
 
 app.use(errorHandler)
 
